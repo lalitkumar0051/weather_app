@@ -18,7 +18,8 @@ class HourlyWeatherForcast extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SizedBox(
-          width: 100,
+          width: 180,
+          height: 180,
           child: Column(
             children: [
               Text(

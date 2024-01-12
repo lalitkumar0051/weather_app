@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weather_app/secrets.dart';
 import 'additional_info_item.dart';
 import 'hourly_weather_forcast.dart';
@@ -48,7 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {});
+            },
             icon: const Icon(Icons.refresh),
           )
         ],
@@ -78,7 +81,6 @@ class _MyHomePageState extends State<MyHomePage> {
             final pressure = weatherData['main']['pressure'];
             final icon = weatherData['weather'][0]['main'];
             final hourlyForecast = forecastData['list'];
-            // final forecastIcon = forecastData['list'][0];
 
             return SingleChildScrollView(
               child: Padding(
@@ -100,15 +102,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             style: const TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 100),
                           ),
-                          // Icon(
-                          //   currentSky == 'smoke' || currentSky == 'rain'
-                          //       ? Icons.cloud
-                          //       : Icons.water_rounded,
-                          //   size: 100,
-                          // ),
-
-                          // getWeatherIcon(currentSky),
-
                           getWeatherCondition(icon),
                           Text(
                             currentSky,
@@ -125,21 +118,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
                     ),
-                    SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          for (int i = 0; i < 9; i++)
-                            HourlyWeatherForcast(
-                              time: hourlyForecast[i]["dt_txt"].toString(),
-                              url: getUrl(
-                                  hourlyForecast[i]['weather'][0]['main']),
-                              temp: hourlyForecast[i]['main']['temp']
-                                  .toInt()
-                                  .toString(),
-                            ),
-                        ],
+                    SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                        itemCount: 9,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final time =
+                              DateTime.parse(hourlyForecast[index]["dt_txt"]);
+                          return HourlyWeatherForcast(
+                            time: DateFormat.Hm().format(time),
+                            url: getUrl(
+                                hourlyForecast[index]['weather'][0]['main']),
+                            temp:
+                                '${hourlyForecast[index]['main']['temp'].toInt().toString()}° C',
+                          );
+                        },
                       ),
                     ),
                     const SizedBox(
