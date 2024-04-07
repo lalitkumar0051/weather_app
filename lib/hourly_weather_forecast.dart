@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class HourlyWeatherForcast extends StatelessWidget {
+class HourlyWeatherForecast extends StatelessWidget {
   final String time;
   final String url;
   final String temp;
-  const HourlyWeatherForcast({
+  const HourlyWeatherForecast({
     super.key,
     required this.time,
     required this.temp,
